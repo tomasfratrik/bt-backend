@@ -19,38 +19,38 @@ IMG_DIR = "images"
 def index():
     return jsonify('pong!')
 
-@app.route('/grisa_test', methods=['GET', 'POST'])
+@app.route('/grisa_test', methods=['GET'])
 def grisa_test():
-    # PATH="./driver/chromedriver/chromedriver"
+    LOCAL_DEV = False
     grisa = Grisa()
-    # grisa.set_driver_path(PATH)
-    grisa.set_driver_path("CHROMEDRIVER_PATH")
-    grisa.set_binary_path("GOOGLE_CHROME_BIN")
+    grisa.options_add_argument('--headless')
+    grisa.options_add_argument('--no-sandbox')
+    grisa.options_add_argument('--disable-dev-shm-usage')
+    grisa.options_add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+
+    try:
+        grisa.set_driver_path("CHROMEDRIVER_PATH")
+        grisa.set_binary_path("GOOGLE_CHROME_BIN")
+        LOCAL_DEV = False
+    except Exception as e:
+        CHROMEDRIVER_PATH="./driver/chromedriver/chromedriver"
+        grisa.set_driver_path(CHROMEDRIVER_PATH)
+        LOCAL_DEV = True
+
     grisa.init_driver()
-    # relative_path = "audia6.png"
-    relative_path = "house.jpeg"
-    full_path = os.path.join(os.getcwd(), relative_path)
-    # grisa.run(full_path, accept_cookies=True, local=True)
-    grisa.run(full_path, accept_cookies=True)
-    # grisa.run("https://im9.cz/sk/iR/importprodukt-orig/808/808fd902a98bc47d11d06a91f2af9424--mm2000x2000.jpg")
-    # sleep(2)
+    relative_path = "grisa_test_img/house.jpeg"
+    absolute_path = os.path.join(os.getcwd(), relative_path)
+    grisa.run(absolute_path, accept_cookies=True, local_dev=LOCAL_DEV)
     page_source = grisa.get_page_source()
     similiar_img_json = grisa.scrape_similiar(page_source)
-    # grisa.go_to_source()
-    # page_source = grisa.get_page_source()
-    # source_img_json = grisa.scrape_source(page_source)
-    # print(f"similiar_img_json: {similiar_img_json}")
-    # print(100*"*")
-    # print(f"source_img_json: {source_img_json}")
     grisa.driver_quit()
-    # return similiar_img_json, source_img_json
-    # print(f"similiar_img_json: {similiar_img_json}")
     return jsonify(similiar_img_json)
 
 
 @app.route('/grisa', methods=['GET', 'POST'])
 def grisa():
     if request.method == 'POST':
+        LOCAL_DEV = False
         if 'file' not in request.files:
             return jsonify({'error': 'No file part'})
 
@@ -68,10 +68,22 @@ def grisa():
         file.save(absolute_path)
 
         grisa = Grisa()
-        grisa.set_driver_path("CHROMEDRIVER_PATH")
-        grisa.set_binary_path("GOOGLE_CHROME_BIN")
+        grisa.options_add_argument('--headless')
+        grisa.options_add_argument('--no-sandbox')
+        grisa.options_add_argument('--disable-dev-shm-usage')
+        grisa.options_add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+
+        try:
+            grisa.set_driver_path("CHROMEDRIVER_PATH")
+            grisa.set_binary_path("GOOGLE_CHROME_BIN")
+            LOCAL_DEV = False
+        except Exception as e:
+            CHROMEDRIVER_PATH="./driver/chromedriver/chromedriver"
+            grisa.set_driver_path(CHROMEDRIVER_PATH)
+            LOCAL_DEV = True
+
         grisa.init_driver()
-        grisa.run(absolute_path, accept_cookies=True, local=False)
+        grisa.run(absolute_path, accept_cookies=True, local_dev=LOCAL_DEV)
 
         page_source = grisa.get_page_source()
         similiar_img_json = grisa.scrape_similiar(page_source)
