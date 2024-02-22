@@ -69,13 +69,15 @@ def grisa():
 
         # PATH="./driver/chromedriver/chromedriver"
         grisa = Grisa()
-        grisa.set_driver_path(PATH)
+        # grisa.set_driver_path(PATH)
         grisa.set_driver_path("CHROMEDRIVER_PATH")
         grisa.set_binary_path("GOOGLE_CHROME_BIN")
         grisa.init_driver()
-        relative_path = f"{img_folder}/{img_name}"
+        # relative_path = f"{img_folder}/{img_name}"
+        # full_path = os.path.join(os.getcwd(), relative_path)
+        relative_path = "house.jpeg"
         full_path = os.path.join(os.getcwd(), relative_path)
-        grisa.run(full_path, accept_cookies=False)
+        grisa.run(full_path, accept_cookies=True)
         # grisa.run(full_path)
         # grisa.run("https://im9.cz/sk/iR/importprodukt-orig/808/808fd902a98bc47d11d06a91f2af9424--mm2000x2000.jpg")
         # sleep(2)
@@ -89,6 +91,9 @@ def grisa():
         # print(f"source_img_json: {source_img_json}")
         grisa.driver_quit()
         # return similiar_img_json, source_img_json
+        # remove file from img folder
+        os.remove(img_path)
+        print(f"similiar_img_json: {similiar_img_json}")
         return jsonify(similiar_img_json)
 
 if __name__ == '__main__':
