@@ -22,7 +22,7 @@ def index():
 def grisa_test():
     # PATH="./driver/chromedriver/chromedriver"
     grisa = Grisa()
-    grisa.set_driver_path(PATH)
+    # grisa.set_driver_path(PATH)
     grisa.set_driver_path("CHROMEDRIVER_PATH")
     grisa.set_binary_path("GOOGLE_CHROME_BIN")
     grisa.init_driver()
