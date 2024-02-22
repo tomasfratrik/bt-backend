@@ -16,7 +16,7 @@ CORS(app)
 IMG_DIR = "images"
 
 @app.route('/ping', methods=['GET'])
-def index():
+def ping():
     return jsonify('pong!')
 
 @app.route('/grisa_test', methods=['GET'])
