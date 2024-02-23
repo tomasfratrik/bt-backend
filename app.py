@@ -1,19 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
-import uuid
 
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-from time import sleep
 from grisa import Grisa
+from src.image import Image
 
 app = Flask(__name__)
 CORS(app)
-IMG_DIR = "images"
 
 @app.route('/ping', methods=['GET'])
 def ping():
@@ -47,25 +40,20 @@ def grisa_test():
     return jsonify(similiar_img_json)
 
 
-@app.route('/grisa', methods=['GET', 'POST'])
+@app.route('/grisa/upload', methods=['GET', 'POST'])
 def grisa():
     if request.method == 'POST':
         LOCAL_DEV = False
         if 'file' not in request.files:
-            return jsonify({'error': 'No file part'})
+            return jsonify({'error': 'No file found'})
 
         file = request.files['file']
 
         if file.filename == '':
-            return jsonify({'error': 'No selected file'})
+            return jsonify({'error': 'file has empty name'})
 
-        # get image extension
-        extention = file.filename.split('.')[-1]
-        img_random_id = str(uuid.uuid4())
-        img_new_name = f"{img_random_id}.{extention}"
-        relative_path = os.path.join(IMG_DIR, img_new_name)
-        absolute_path = os.path.join(os.getcwd(), relative_path)
-        file.save(absolute_path)
+        img = Image(file)
+        absolute_path = img.get_absolute_path()
 
         grisa = Grisa()
         grisa.options_add_argument('--headless')
@@ -87,11 +75,13 @@ def grisa():
 
         page_source = grisa.get_page_source()
         similiar_img_json = grisa.scrape_similiar(page_source)
+        grisa.go_to_source()
+        page_source = grisa.get_page_source()
+        source_img_json = grisa.scrape_source(page_source)
         grisa.driver_quit()
 
-        os.remove(absolute_path)
-        print(f"similiar_img_json: {similiar_img_json}")
-        return jsonify(similiar_img_json)
+        img.remove()
+        return jsonify({'similiar_img': similiar_img_json, 'source_img': source_img_json})
 
 if __name__ == '__main__':
     app.run(debug=True)
