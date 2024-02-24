@@ -1,9 +1,10 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from src.scraper import Scraper
 import os
 
 from grisa import Grisa
-from src.image import Image
+from src.image import Image, PostedImage
 
 app = Flask(__name__)
 CORS(app)
@@ -11,6 +12,20 @@ CORS(app)
 @app.route('/ping', methods=['GET'])
 def ping():
     return jsonify('pong!')
+
+@app.route('/get_images_from_url', methods=['POST'])
+def get_images_from_url():
+    if request.method == 'POST':
+        url = request.json['url']
+        result = Scraper.scrape_advertisement_images(url)
+        if "error" in result:
+            return jsonify(result)
+
+        return_val_format = {
+            'url': url,
+            'images': result
+        }
+        return jsonify(return_val_format)
 
 @app.route('/grisa_test', methods=['GET'])
 def grisa_test():
@@ -52,7 +67,7 @@ def grisa():
         if file.filename == '':
             return jsonify({'error': 'file has empty name'})
 
-        img = Image(file)
+        img = PostedImage(file)
         absolute_path = img.get_absolute_path()
 
         grisa = Grisa()
