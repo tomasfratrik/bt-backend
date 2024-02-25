@@ -1,7 +1,7 @@
-__all__ = ['websites_map', 'Sreality']
+__all__ = ['websites_map', 'Reality']
 
-from .sreality import Sreality
+from .reality import Reality
 
 websites_map = {
-    'sreality': Sreality()
+    'reality': Reality()
 }
