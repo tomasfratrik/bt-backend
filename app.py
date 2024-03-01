@@ -38,23 +38,24 @@ def get_images_from_url():
 @app.route('/grisa/upload', methods=['POST', 'GET'])
 def grisa():
     """
-    Main server endnpoint to run grisa
+    Main server endpoint to run grisa
     
     Accepts url of file or file itself
     """
     if request.method == 'POST':
         LOCAL_DEV = False
+        print("got request")
 
-        if 'url' in request.json:
-            url = request.json['url']
-            img = PostedImage(url, url=True)
-            if img.get_status_code() != 200:
-                return jsonify({'error': 'Image is not accesible by the host server'})
-        elif 'file' in request.files:
+        if request.files.get('file'):
             file = request.files['file']
             if file.filename == '':
                 return jsonify({'error': 'File has empty name'})
             img = PostedImage(file, filename=file.filename, url=False)
+        elif request.json.get('url'):
+            url = request.json['url']
+            img = PostedImage(url, url=True)
+            if img.get_status_code() != 200:
+                return jsonify({'error': 'Image is not accesible by the host server'})
         else:
             return jsonify({'error': 'No file found'})
 

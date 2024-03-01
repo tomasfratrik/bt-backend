@@ -26,5 +26,4 @@ def run_grisa(absolute_path, LOCAL_DEV=False):
     source_img_json = grisa.scrape_source(page_source)
     grisa.driver_quit()
 
-    # return jsonify({'similiar_img': similiar_img_json, 'source_img': source_img_json})
     return (similiar_img_json, source_img_json)
