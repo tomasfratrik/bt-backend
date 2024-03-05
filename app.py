@@ -1,11 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from src.scraper import Scraper
+from src.evaluator import Evaluator
 from run_grisa import run_grisa
 import os
 
 from grisa import Grisa
-from src.image import PostedImage
+from src.image import PostedImage, FoundImage
 
 app = Flask(__name__)
 CORS(app)
@@ -60,13 +61,25 @@ def grisa():
             return jsonify({'error': 'No file found'})
 
         output = run_grisa(img.get_absolute_path(), LOCAL_DEV)
-        img.remove()
+        # output = (similiar_img_json, source_img_json)
+
+        posted_img_list = [img]
+
+        for img in posted_img_list:
+            print("removing image")
+            img.remove()
 
         if output is None:
-            return jsonify({'error': 'No similar images found'})
+            return jsonify({'error': 'No similar images found!'})
         elif 'error' in output:
             return jsonify(output)
-        
+
+        sim_img_list = [FoundImage(img) for img in output[0]]
+        src_img_list = [FoundImage(img) for img in output[1]]
+
+        evaluator = Evaluator(posted_img_list, sim_img_list, src_img_list)        
+        # evaluator.evaluate()
+
         similiar_img_json, source_img_json = output
 
         return jsonify({'similiar_img': similiar_img_json, 'source_img': source_img_json})

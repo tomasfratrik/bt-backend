@@ -2,3 +2,7 @@
 venv/
 __pycache__/
 driver/
+images/*.jpg
+images/*.jpeg
+images/*.png
+

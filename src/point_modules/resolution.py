@@ -1,0 +1,3 @@
+
+def resolution():
+    print("resolution")
