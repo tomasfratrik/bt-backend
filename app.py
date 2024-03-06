@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from src.scraper import Scraper
 from src.evaluator import Evaluator
+from src.format_parser import FormatParser
 from run_grisa import run_grisa
 import os
 
@@ -77,12 +78,17 @@ def grisa():
         sim_img_list = [FoundImage(img) for img in output[0]]
         src_img_list = [FoundImage(img) for img in output[1]]
 
-        evaluator = Evaluator(posted_img_list, sim_img_list, src_img_list)        
+        # TODO: filter images
+
+        formated = FormatParser(posted_img_list=posted_img_list, 
+                              sim_img_list=sim_img_list, 
+                              src_img_list=src_img_list )        
         # evaluator.evaluate()
+        # evaluator = Evaluator(report)
 
-        similiar_img_json, source_img_json = output
+        # similiar_img_json, source_img_json = output
 
-        return jsonify({'similiar_img': similiar_img_json, 'source_img': source_img_json})
+        return jsonify(formated.report)
 
 
 @app.route('/grisa_test', methods=['GET'])
