@@ -44,6 +44,9 @@ def grisa():
     
     Accepts url of file or file itself
     """
+
+    # TODO: as project grew, this got messy, refactor, modularize
+
     if request.method == 'POST':
         LOCAL_DEV = False
         print("got request")
@@ -83,8 +86,9 @@ def grisa():
         formated = FormatParser(posted_img_list=posted_img_list, 
                               sim_img_list=sim_img_list, 
                               src_img_list=src_img_list )        
-        # evaluator.evaluate()
-        # evaluator = Evaluator(report)
+
+        evaluator = Evaluator(formated.get_report())
+        evaluator.evaluate()
 
         # similiar_img_json, source_img_json = output
 

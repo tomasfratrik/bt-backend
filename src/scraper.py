@@ -1,5 +1,5 @@
 from urllib.parse import urlsplit 
-from .supported_websites import *
+import src.supported_websites as suppw
 
 class Scraper():
     """
@@ -16,9 +16,9 @@ class Scraper():
             domain = domain_split[1]
         else:
             domain = domain_split[0]
-        corresponding_class = websites_map.get(domain)
+        corresponding_class = suppw.websites_map.get(domain)
         if corresponding_class:
-            return corresponding_class.scrape(url)
+            return suppw.corresponding_class.scrape(url)
         else:
             return {"error": "Website not supported"}
         
