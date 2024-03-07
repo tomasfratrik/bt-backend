@@ -4,6 +4,7 @@ import requests
 from urllib.parse import urlsplit
 IMG_DIR = "images"
 IMAGE_TYPES = ["posted_images", "similar_images", "source_images", "database"]
+FOUND_IMAGE_TYPES = ["similar_images", "source_images"] 
 
 class Image:
     
@@ -46,6 +47,10 @@ class Image:
     def get_img_description(self):
         return self._description
     
+    def set_img_resolution(self, resolution):
+        self._resolution = resolution
+    def get_img_resolution(self):
+        return self._resolution
 
     def parse_domain(self, url):
         parsed_url = urlsplit(url)
@@ -138,6 +143,7 @@ class FoundImage(Image):
         self.set_img_origin_website_url(img_obj.get('link'))
         self.set_img_origin_website_name(img_obj.get('website'))
         self.set_img_position(img_obj.get('position'))
+        self.set_img_resolution(img_obj.get('resolution'))
         self.parse_domain(self.get_img_origin_website_url())
     
     def get_img_position(self):

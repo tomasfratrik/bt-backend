@@ -9,6 +9,7 @@ from src.evaluator import Evaluator
 from src.format_parser import FormatParser
 from src.run_grisa import run_grisa
 from src.image import PostedImage, FoundImage
+from src.parse_exif_data import ParseExifData
 
 
 app = Flask(__name__)
@@ -89,14 +90,14 @@ def grisa():
                               sim_img_list=sim_img_list, 
                               src_img_list=src_img_list)        
         
-        # formated_output = GetExifData(formated_output)
+        exif_parser = ParseExifData(formated_output.get_report())
+        report = exif_parser.parse_exif_data()
 
-        evaluator = Evaluator(formated_output.get_report())
-        evaluator.evaluate()
 
-        # similiar_img_json, source_img_json = output
+        evaluator = Evaluator(report)
+        report = evaluator.evaluate()
 
-        return jsonify(formated_output.report)
+        return jsonify(report)
 
 
 @app.route('/grisa_test', methods=['GET'])
