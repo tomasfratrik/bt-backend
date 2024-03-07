@@ -18,7 +18,7 @@ class Scraper():
             domain = domain_split[0]
         corresponding_class = suppw.websites_map.get(domain)
         if corresponding_class:
-            return suppw.corresponding_class.scrape(url)
+            return corresponding_class.scrape(url)
         else:
             return {"error": "Website not supported"}
         

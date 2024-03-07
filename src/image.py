@@ -3,7 +3,7 @@ import uuid
 import requests
 from urllib.parse import urlsplit
 IMG_DIR = "images"
-
+IMAGE_TYPES = ["posted_images", "similar_images", "source_images", "database"]
 
 class Image:
     
