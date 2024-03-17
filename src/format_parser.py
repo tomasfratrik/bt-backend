@@ -1,4 +1,6 @@
 from src.image import Image
+import src.point_modules as pm
+
 
 class FormatParser():
 
@@ -16,36 +18,39 @@ class FormatParser():
             self.report["images"]["posted_images"].append({
                 "display_photo_url": img.get_origin_img_url_link(),
                 "website_url": "sus",
-                "website_name": img.get_origin_img_url_link(),
+                "website_name": img.get_website_name(),
+                "domain": img.get_domain(),
                 "tld": img.get_tld(),
                 "display_position": 0,
-                "score": 0,
-                "point_modules_detected": []
+                "points": 0,
+                "point_modules_detected": {} 
             })
-    def parse_found_images(self):
 
+    def parse_found_images(self):
         for img in self._sim_img_list:
             self.report["images"]["similar_images"].append({
                 "display_photo_url": img.get_img_display_url(),
                 "website_url": img.get_img_origin_website_url(),
-                "website_name": img.get_img_origin_website_name(),
+                "website_name": img.get_website_name(),
                 "position": img.get_img_position(),
+                "domain": img.get_domain(),
                 "tld": img.get_tld(),
                 "display_position": 0,
-                "score": 0,
-                "point_modules_detected": []
+                "points": 0,
+                "point_modules_detected": {} 
             })
         for img in self._src_img_list:
             self.report["images"]["source_images"].append({
                 "display_photo_url": img.get_img_display_url(),
                 "website_url": img.get_img_origin_website_url(),
-                "website_name": img.get_img_origin_website_name(),
+                "website_name": img.get_website_name(),
                 "position": img.get_img_position(),
                 "resolution": img.get_img_resolution(),
+                "domain": img.get_domain(),
                 "tld": img.get_tld(),
                 "display_position": 0,
-                "score": 0,
-                "point_modules_detected": []
+                "points": 0,
+                "point_modules_detected": {} 
             })
        
 
@@ -54,6 +59,7 @@ class FormatParser():
             "status": "ok",
             "error_msg": "",
             "point_modules_severity": {},
+            "max_points": pm.max_points(),
             "baseline": {},
             "images": {
                 "posted_images": [],

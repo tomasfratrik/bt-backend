@@ -5,8 +5,10 @@ from flask_cors import CORS
 from grisa import Grisa
 
 from src.scraper import Scraper
+from src.filter_images import FilterImages
 from src.evaluator import Evaluator
 from src.format_parser import FormatParser
+from src.adjust import Adjust
 from src.run_grisa import run_grisa
 from src.image import PostedImage, FoundImage
 from src.parse_exif_data import ParseExifData
@@ -52,7 +54,6 @@ def grisa():
 
     if request.method == 'POST':
         LOCAL_DEV = False
-        print("got request")
 
         if request.files.get('file'):
             file = request.files['file']
@@ -73,7 +74,6 @@ def grisa():
         posted_img_list = [img]
 
         for img in posted_img_list:
-            print("removing image")
             img.remove()
 
         if output is None:
@@ -84,20 +84,19 @@ def grisa():
         sim_img_list = [FoundImage(img) for img in output[0]]
         src_img_list = [FoundImage(img) for img in output[1]]
 
-        # TODO: filter images
-
         formated_output = FormatParser(posted_img_list=posted_img_list, 
-                              sim_img_list=sim_img_list, 
-                              src_img_list=src_img_list)        
+                                        sim_img_list=sim_img_list, 
+                                        src_img_list=src_img_list)        
         
-        exif_parser = ParseExifData(formated_output.get_report())
-        report = exif_parser.parse_exif_data()
+        filtered_report = FilterImages(formated_output.get_report())
 
+        evaluator = Evaluator(filtered_report.get_report())
+        evaluator.evaluate()
 
-        evaluator = Evaluator(report)
-        report = evaluator.evaluate()
+        adjusted_report = Adjust(evaluator.get_report())
+        
 
-        return jsonify(report)
+        return jsonify(adjusted_report.get_report())
 
 
 @app.route('/grisa_test', methods=['GET'])
@@ -130,7 +129,6 @@ def grisa_test():
     similiar_img_json = grisa.scrape_similiar(page_source)
     grisa.driver_quit()
     return jsonify(similiar_img_json)
-
 
 
 if __name__ == '__main__':

@@ -55,14 +55,14 @@ class Image:
     def parse_domain(self, url):
         parsed_url = urlsplit(url)
         netloc = parsed_url.netloc
-        domain_split = netloc.split('.')
-        if domain_split[0] == 'www':
-            self._website_name = domain_split[1]
-            self._tld = domain_split[2]
-        else:
-            self._website_name = domain_split[0]
-            self._tld = domain_split[1]
+        self._domain = netloc
+        domain_split = self._domain.split('.')
+        self._tld = domain_split[-1]
+        self._website_name = domain_split[-2]
 
+    def get_domain(self):
+        return self._domain
+    
     def get_website_name(self):
         return self._website_name
     def get_tld(self):
@@ -141,7 +141,7 @@ class FoundImage(Image):
         self.set_img_description(img_obj.get('description'))
         self.set_img_display_url(img_obj.get('imageurl'))
         self.set_img_origin_website_url(img_obj.get('link'))
-        self.set_img_origin_website_name(img_obj.get('website'))
+        # self.set_img_origin_website_name(img_obj.get('website'))
         self.set_img_position(img_obj.get('position'))
         self.set_img_resolution(img_obj.get('resolution'))
         self.parse_domain(self.get_img_origin_website_url())

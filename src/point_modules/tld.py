@@ -1,5 +1,5 @@
 from .tld_utils import tld_countries
-from .points import points
+from .points import points_map
 from src.image import IMAGE_TYPES
 
 def set_baseline(images):
@@ -17,12 +17,10 @@ def set_baseline(images):
         if tld not in tld_countries:
             del tld_dict[tld]
 
-    # put tu baseline list of all tlds with the highest same count
-    tld_baseline = []
+    tld_baseline = {}
     for tld, count in tld_dict.items():
         if count == max(tld_dict.values()):
-            formated_tld = { f"{tld}": tld_countries.get(tld) }
-            tld_baseline.append(formated_tld)
+            tld_baseline[tld] = tld_countries.get(tld)
     
     return tld_baseline
 
@@ -36,10 +34,9 @@ def top_level_domain(report=None):
 
     for img_type in IMAGE_TYPES:
         for img in report["images"][img_type]:
-            if img["tld"] in tld_countries:
-                continue
-            if img["tld"] not in report["baseline"]["tld"]:
-                img["point_modules_detected"].append("top_level_domain")
-                img["score"] += points["top_level_domain"]
+            if img["tld"] in tld_countries: # it is a country tld
+                if img["tld"] not in report["baseline"]["tld"].keys():
+                    img["point_modules_detected"]["top_level_domain"] = points_map.get("top_level_domain")
+                    img["points"] += points_map["top_level_domain"]["points"]
 
     return report

@@ -1,5 +1,5 @@
 
 sus_websites = [
-    "booking"
+    "booking",
     "airbnb"
 ]
