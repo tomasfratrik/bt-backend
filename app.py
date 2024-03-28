@@ -12,6 +12,7 @@ from src.adjust import Adjust
 from src.run_grisa import run_grisa
 from src.image import PostedImage, FoundImage
 from src.parse_exif_data import ParseExifData
+import src.utils as utils
 
 
 app = Flask(__name__)
@@ -50,8 +51,6 @@ def grisa():
     Accepts url of file or file itself
     """
 
-    # TODO: as project grew, this got messy, refactor, modularize
-
     if request.method == 'POST':
         LOCAL_DEV = False
 
@@ -69,12 +68,9 @@ def grisa():
             return jsonify({'error': 'No file found'})
 
         output = run_grisa(img.get_absolute_path(), LOCAL_DEV)
-        # output = (similiar_img_json, source_img_json)
 
         posted_img_list = [img]
 
-        for img in posted_img_list:
-            img.remove()
 
         if output is None:
             return jsonify({'error': 'No similar images found!'})
@@ -94,7 +90,8 @@ def grisa():
         evaluator.evaluate()
 
         adjusted_report = Adjust(evaluator.get_report())
-        
+
+        utils.remove_images(posted_img_list + sim_img_list + src_img_list) 
 
         return jsonify(adjusted_report.get_report())
 

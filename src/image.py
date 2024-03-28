@@ -2,6 +2,8 @@ import os
 import uuid
 import requests
 from urllib.parse import urlsplit
+import imghdr
+
 IMG_DIR = "images"
 IMAGE_TYPES = ["posted_images", "similar_images", "source_images", "database"]
 FOUND_IMAGE_TYPES = ["similar_images", "source_images"] 
@@ -68,6 +70,54 @@ class Image:
     def get_tld(self):
         return self._tld
 
+    def set_img_file(self, file):
+        self._file = file
+    def get_img_file(self):
+        return self._file
+
+    def _generate_random_name(self):
+        self.set_img_random_id(str(uuid.uuid4()))
+        if self.from_url():
+            self.set_original_img_extention(self._url_get_img_extention_from_link())
+        self.set_generated_filename(f"{self.get_img_random_id()}.{self.get_original_img_extention()}")
+
+    def set_generated_filename(self, name):
+        self._generated_filename = name
+    def get_generated_filename(self):
+        return self._generated_filename
+    
+    def get_status_code(self):
+        return self._status_code
+    def set_status_code(self, status_code):
+        self._status_code = status_code
+
+    def from_url(self):
+        return self._from_url
+
+    def set_origin_img_url_link(self, url):
+        self._url_link = url
+    
+    def get_origin_img_url_link(self):
+        return self._url_link 
+
+    def _url_get_img_extention_from_link(self):
+        return self.get_origin_img_url_link().split('.')[-1]
+
+    def save_file(self):
+        if self.from_url():
+            url = self.get_origin_img_url_link()
+            res = requests.get(url)
+            self.set_status_code(res.status_code)
+            if self.get_status_code() == 200:
+                with open(self.get_absolute_path(), 'wb') as f:
+                    f.write(res.content)
+                    self._image_data = res.content
+        else:
+            self.get_img_file().save(self.get_absolute_path())
+
+    def remove(self):
+        os.remove(self.get_absolute_path())
+
     
 
 
@@ -88,56 +138,10 @@ class PostedImage(Image):
         self.set_absolute_path()
         self.save_file()
 
-    def _url_get_img_extention_from_link(self):
-        return self.get_origin_img_url_link().split('.')[-1]
-
-    def _generate_random_name(self):
-        self.set_img_random_id(str(uuid.uuid4()))
-        if self.from_url():
-            self.set_original_img_extention(self._url_get_img_extention_from_link())
-        self.set_generated_filename(f"{self.get_img_random_id()}.{self.get_original_img_extention()}")
-    
-    def set_generated_filename(self, name):
-        self._generated_filename = name
-    def get_generated_filename(self):
-        return self._generated_filename
-
-    def set_origin_img_url_link(self, url):
-        self._url_link = url
-    
-    def get_origin_img_url_link(self):
-        return self._url_link 
-
-    def from_url(self):
-        return self._from_url
-
-    def set_img_file(self, file):
-        self._file = file
-    def get_img_file(self):
-        return self._file
-    
-    def get_status_code(self):
-        return self._status_code
-    def set_status_code(self, status_code):
-        self._status_code = status_code
-
-    def save_file(self):
-        if self.from_url():
-            url = self.get_origin_img_url_link()
-            res = requests.get(url)
-            self.set_status_code(res.status_code)
-            if self.get_status_code() == 200:
-                with open(self.get_absolute_path(), 'wb') as f:
-                    f.write(res.content)
-        else:
-            self.get_img_file().save(self.get_absolute_path())
-
-    def remove(self):
-        os.remove(self.get_absolute_path())
-    
 
 class FoundImage(Image):
     def __init__(self, img_obj={}):
+        self._from_url = True
         self.set_img_description(img_obj.get('description'))
         self.set_img_display_url(img_obj.get('imageurl'))
         self.set_img_origin_website_url(img_obj.get('link'))
@@ -145,6 +149,14 @@ class FoundImage(Image):
         self.set_img_position(img_obj.get('position'))
         self.set_img_resolution(img_obj.get('resolution'))
         self.parse_domain(self.get_img_origin_website_url())
+
+        self.set_origin_img_url_link(self.get_img_display_url())
+
+        self._generate_random_name()
+        self.set_relative_path()
+        self.set_absolute_path()
+        self.save_file()
+        self.find_img_extention()
     
     def get_img_position(self):
         return self._position
@@ -165,6 +177,21 @@ class FoundImage(Image):
         self._display_url = url
     def get_img_display_url(self):
         return self._display_url
+    
+    def find_img_extention(self):
+        image_format = imghdr.what(self.get_absolute_path()) 
+        self.set_found_img_extention(image_format)
+    def get_found_img_extention(self):
+        return self._found_img_extention
+    def set_found_img_extention(self, extention):
+        self._found_img_extention = extention
+    
+    def get_original_img_extention(self):
+        return 'jpg'
+
+    def _generate_random_name(self):
+        self.set_img_random_id(str(uuid.uuid4()))
+        self.set_generated_filename(f"{self.get_img_random_id()}.{self.get_original_img_extention()}")
 
 class DatabaseImage(Image):
     pass

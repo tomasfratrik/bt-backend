@@ -1,11 +1,5 @@
 # Names have to correlate with module names
 
-# points = {
-#     "top_level_domain": 3,
-#     "suspicious_website": 2,
-#     "resolution": 1,
-# }
-
 points_map = {
     "top_level_domain": {
         "name": "Top Level Domain",
@@ -22,5 +16,9 @@ points_map = {
         "points": 1,
         "description": "Resolution of image found on website is lower than expected"
     },
-
+    "extention": {
+        "name": "Extention",
+        "points": 1,
+        "description": "Image extention is not common"
+    },
 }

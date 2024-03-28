@@ -1,5 +1,7 @@
 from .reality import Reality
+from .topreality import CeskeReality
 
 websites_map = {
-    'reality': Reality()
+    'reality': Reality(),   
+    'ceskereality': CeskeReality(),
 }

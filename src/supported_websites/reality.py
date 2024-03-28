@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 
 
 class Reality:
+
     @staticmethod
     def scrape(url):
         response = requests.get(url)
