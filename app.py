@@ -13,6 +13,7 @@ from src.run_grisa import run_grisa
 from src.image import PostedImage, FoundImage
 from src.parse_exif_data import ParseExifData
 import src.utils as utils
+import src.database as db
 
 
 app = Flask(__name__)
@@ -71,6 +72,9 @@ def grisa():
 
         posted_img_list = [img]
 
+        # db.insert_fraud_ad(conn, cur, img.get_website_name(), img.get_origin_img_url_link(), img.get_origin_img_url_link, img.get_image_data())
+
+        db_img_list = db.get_fraud_ads_by_similarity(img.get_image_data())
 
         if output is None:
             return jsonify({'error': 'No similar images found!'})
@@ -82,7 +86,8 @@ def grisa():
 
         formated_output = FormatParser(posted_img_list=posted_img_list, 
                                         sim_img_list=sim_img_list, 
-                                        src_img_list=src_img_list)        
+                                        src_img_list=src_img_list,
+                                        db_img_list=db_img_list)        
         
         filtered_report = FilterImages(formated_output.get_report())
 
@@ -129,4 +134,7 @@ def grisa_test():
 
 
 if __name__ == '__main__':
+    db.connect()
+    db.create_tables()
     app.run(debug=True)
+    db.close_connection()

@@ -25,9 +25,9 @@ class Adjust():
             self.report["images"][img_type] = sorted(self.report["images"][img_type], key=lambda x: x["points"], reverse=True)
     
     def score_to_percent(self):
-        for img_type in self.report["images"]:
+        for img_type in IMAGE_TYPES:
             for img in self.report["images"][img_type]:
-                 img["total_points_percentage"] = int((img["points"] / self.report["max_points"]) * 100)
+                img["total_points_percentage"] = int((img["points"] / self.report["max_points"]) * 100)
     
     def get_report(self):
         return self.report

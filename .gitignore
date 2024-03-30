@@ -1,5 +1,7 @@
 .venv/
 venv/
+.vscode/
+setup_env_vars.sh
 __pycache__/
 driver/
 images/*.jpg
