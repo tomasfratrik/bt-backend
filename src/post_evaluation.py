@@ -1,7 +1,7 @@
 
 from src.image import IMAGE_TYPES
 
-class Adjust():
+class PostEvaluation():
     """
     Final touches to report
 

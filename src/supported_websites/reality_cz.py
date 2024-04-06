@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-class Reality:
+class Reality_CZ:
 
     @staticmethod
     def scrape(url):

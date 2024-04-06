@@ -21,9 +21,12 @@ def run_grisa(absolute_path, LOCAL_DEV=False):
 
     page_source = grisa.get_page_source()
     similiar_img_json = grisa.scrape_similiar(page_source)
-    grisa.go_to_source()
-    page_source = grisa.get_page_source()
-    source_img_json = grisa.scrape_source(page_source)
+    try:
+        grisa.go_to_source()
+        page_source = grisa.get_page_source()
+        source_img_json = grisa.scrape_source(page_source)
+    except Exception as e:
+        source_img_json = []
     grisa.driver_quit()
 
     return (similiar_img_json, source_img_json)

@@ -79,7 +79,7 @@ class Image:
         self.set_img_random_id(str(uuid.uuid4()))
         if self.from_url():
             self.set_original_img_extention(self._url_get_img_extention_from_link())
-        self.set_generated_filename(f"{self.get_img_random_id()}.{self.get_original_img_extention()}")
+        self.set_generated_filename(f"{self.get_img_random_id()}.jpg")
 
     def set_generated_filename(self, name):
         self._generated_filename = name

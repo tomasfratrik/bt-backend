@@ -12,10 +12,8 @@ class Scraper():
         parsed_url = urlsplit(url)
         netloc = parsed_url.netloc
         domain_split = netloc.split('.')
-        if domain_split[0] == 'www':
-            domain = domain_split[1]
-        else:
-            domain = domain_split[0]
+        # domain = domain_split[0]
+        domain = '.'.join(domain_split[-2:])
         corresponding_class = suppw.websites_map.get(domain)
         if corresponding_class:
             return corresponding_class.scrape(url)

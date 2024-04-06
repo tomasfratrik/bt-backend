@@ -1,7 +1,7 @@
-from .reality import Reality
-from .topreality import CeskeReality
+from .reality_cz import Reality_CZ
+from .nehnutelnosti_sk import Nehnutelnosti_SK
 
 websites_map = {
-    'reality': Reality(),   
-    'ceskereality': CeskeReality(),
+    'reality.cz': Reality_CZ(),   
+    'nehnutelnosti.sk': Nehnutelnosti_SK(),
 }

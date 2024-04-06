@@ -66,16 +66,9 @@ class FormatParser():
     def parse_db_images(self):
         for img in self._db_img_list:
             self.report["images"]["database"].append({
-                # "display_photo_url": img.get_img_display_url(),
-                # "ssim": 0,
                 "display_photo_url": img.get_img_origin_website_url(),
                 "website_url": img.get_img_origin_website_url(),
                 "website_name": img.get_website_name(),
-                # "domain": img.get_domain(),
-                # "tld": img.get_tld(),
-                # "display_position": 0,
-                # "points": 0,
-                # "point_modules_detected": {} 
             })
        
 

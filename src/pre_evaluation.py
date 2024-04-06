@@ -9,7 +9,7 @@ from src.image import FOUND_IMAGE_TYPES
 
 
 
-class FilterImages():
+class PreEvaluation():
 
     def __init__(self, report):
         self.report = report
@@ -19,7 +19,7 @@ class FilterImages():
         return self.report
     
     def filter_images(self):
-        self.filter_redundant()
+        # self.filter_redundant()
         self.filter_unsimiliar_images()
     
     def filter_redundant(self):
@@ -37,16 +37,6 @@ class FilterImages():
         img_model_obj = cv2.imread(img_model["file_path"], 0)
         for img_type in FOUND_IMAGE_TYPES:
             for img_found in self.report["images"][img_type]:
-                # try ORB
-                # orb = cv2.ORB_create()
-                # kp1, des1 = orb.detectAndCompute(img_model_obj, None)
-                # kp2, des2 = orb.detectAndCompute(cv2.imread(img_found["file_path"], 0), None)
-                # bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-                # matches = bf.match(des1, des2)
-                # matches = sorted(matches, key=lambda x: x.distance)
-                # sim = sum([m.distance for m in matches]) / len(matches)
-                # img_found["ssim"] = len(matches)
-
                 img_found_obj = cv2.imread(img_found["file_path"],0)
                 resized_img_model = resize(img_model_obj, (img_found_obj.shape[0], img_found_obj.shape[1]), anti_aliasing=True, preserve_range=True)
                 img_found["ssim"] = ssim(resized_img_model, img_found_obj, data_range=255)
