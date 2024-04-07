@@ -10,12 +10,13 @@ def baseline(report=None):
     ext_dict= {}
 
     for img_type in FOUND_IMAGE_TYPES:
-        for img in report["images"][img_type]:
-            ext = img["img_extention"]
-            if ext in ext_dict:
-                ext_dict[ext] += 1
-            else:
-                ext_dict[ext] = 1
+        for portal, data in report["images"][img_type].items():
+            for img in data["images"]:
+                ext = img["img_extention"]
+                if ext in ext_dict:
+                    ext_dict[ext] += 1
+                else:
+                    ext_dict[ext] = 1
     
     ext_baseline = {}
     for ext, count in ext_dict.items():
@@ -38,9 +39,10 @@ def extention(report=None):
                 baseline_exts += ext_group
     
     for img_type in FOUND_IMAGE_TYPES:
-        for img in report["images"][img_type]:
-            if img["img_extention"] not in baseline_exts:
-                img["point_modules_detected"]["img_extention"] = points_map.get("extention")
-                img["points"] += points_map["extention"]["points"]
+        for portal, data in report["images"][img_type].items():
+            for img in data["images"]:
+                if img["img_extention"] not in baseline_exts:
+                    img["point_modules_detected"]["extention"] = points_map.get("extention")
+                    img["points"] += points_map["extention"]["points"]
         
     return report

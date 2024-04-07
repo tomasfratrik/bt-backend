@@ -31,8 +31,9 @@ class FormatParser():
             })
 
     def parse_found_images(self):
+        # group ads by domain
         for img in self._sim_img_list:
-            self.report["images"]["similar_images"].append({
+            img_data = {
                 "display_photo_url": img.get_img_display_url(),
                 "ssim": 0,
                 "file_path": img.get_absolute_path(),
@@ -45,9 +46,20 @@ class FormatParser():
                 "display_position": 0,
                 "points": 0,
                 "point_modules_detected": {} 
-            })
+            }
+            if img.get_domain() not in self.report["images"]["similar_images"]:
+                self.report["images"]["similar_images"][img.get_domain()] = {}
+                self.report["images"]["similar_images"][img.get_domain()]["tld"] = img.get_tld()
+                self.report["images"]["similar_images"][img.get_domain()]["count"] = 1
+                self.report["images"]["similar_images"][img.get_domain()]["domain"] = img.get_domain()
+                self.report["images"]["similar_images"][img.get_domain()]["website_name"] = img.get_website_name() 
+                self.report["images"]["similar_images"][img.get_domain()]["images"] = [img_data]
+            else:
+                self.report["images"]["similar_images"][img.get_domain()]["count"] += 1
+                self.report["images"]["similar_images"][img.get_domain()]["images"].append(img_data)
+            
         for img in self._src_img_list:
-            self.report["images"]["source_images"].append({
+            img_data = {
                 "display_photo_url": img.get_img_display_url(),
                 "ssim": 0,
                 "file_path": img.get_absolute_path(),
@@ -61,8 +73,18 @@ class FormatParser():
                 "display_position": 0,
                 "points": 0,
                 "point_modules_detected": {} 
-            })
-    
+            }
+            if img.get_domain() not in self.report["images"]["source_images"]:
+                self.report["images"]["source_images"][img.get_domain()] = {}
+                self.report["images"]["source_images"][img.get_domain()]["tld"] = img.get_tld()
+                self.report["images"]["source_images"][img.get_domain()]["count"] = 1
+                self.report["images"]["source_images"][img.get_domain()]["domain"] = img.get_domain()
+                self.report["images"]["source_images"][img.get_domain()]["website_name"] = img.get_website_name() 
+                self.report["images"]["source_images"][img.get_domain()]["images"] = [img_data]
+            else:
+                self.report["images"]["source_images"][img.get_domain()]["count"] += 1
+                self.report["images"]["source_images"][img.get_domain()]["images"].append(img_data)
+
     def parse_db_images(self):
         for img in self._db_img_list:
             self.report["images"]["database"].append({
@@ -81,11 +103,35 @@ class FormatParser():
             "baseline": {},
             "images": {
                 "posted_images": [],
-                "similar_images": [],
-                "source_images": [],
+                "similar_images": {},
+                "source_images": {},
                 "database": []
             }
         }
+        # "similiar_images": {
+        #     "reality.cz": {
+        #         "tld": "cz",
+        #         "count": 1,
+        #         "images": [
+        #             {
+        #                 "display_photo_url": "https://reality.cz/obrazek.jpg",
+        #                 "ssim": 0.8,
+        #                 "file_path": "path/to/image.jpg",
+        #                 "website_url": "https://reality.cz",
+        #                 "website_name": "reality.cz",
+        #                 "display_position": 0,
+        #                 "points": 0,
+        #                 "point_modules_detected": {
+        #                     "phash": 0.5,
+        #                     "dhash": 0.5,
+        #                     "ahash": 0.5,
+        #                     "histogram": 0.5,
+        #                     "ssim": 0.5
+        #                 }
+        #             }
+        #         ]
+        #     }
+        # }
     
     def get_report(self):
         return self.report

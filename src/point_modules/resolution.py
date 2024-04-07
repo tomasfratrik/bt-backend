@@ -6,11 +6,12 @@ def set_baseline(images):
     sumx = 0
     sumy = 0
 
-    for img in images["source_images"]:
-        sumx += img["resolution"][0]
-        sumy += img["resolution"][1]
-        sum_pixel +=  img["resolution"][0] * img["resolution"][1]
-        cnt += 1
+    for portal, data in images["source_images"].items():
+        for img in data["images"]:
+            sumx += img["resolution"][0]
+            sumy += img["resolution"][1]
+            sum_pixel +=  img["resolution"][0] * img["resolution"][1]
+            cnt += 1
     
     avgx = sumx / cnt
     avgy = sumy / cnt
@@ -29,9 +30,10 @@ def resolution(report=None):
         "resolution_y": res_y
     }
 
-    for img in report["images"]["source_images"]:
-        if img["resolution"][0] * img["resolution"][1] < avg_pixel_cnt:
-            img["point_modules_detected"]["resolution"] = points_map.get("resolution")
-            img["points"] += points_map["resolution"]["points"]
+    for portal, data in report["images"]["source_images"].items():
+        for img in data["images"]:
+            if img["resolution"][0] * img["resolution"][1] < avg_pixel_cnt:
+                img["point_modules_detected"]["resolution"] = points_map.get("resolution")
+                img["points"] += points_map["resolution"]["points"]
 
     return report

@@ -20,7 +20,8 @@ class PreEvaluation():
     
     def filter_images(self):
         # self.filter_redundant()
-        self.filter_unsimiliar_images()
+        # self.filter_unsimiliar_images()
+        pass
     
     def filter_redundant(self):
         for img_type in FOUND_IMAGE_TYPES:
