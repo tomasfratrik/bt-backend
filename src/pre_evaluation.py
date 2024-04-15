@@ -1,6 +1,4 @@
 import cv2
-import PIL 
-from PIL import Image 
 from skimage.metrics import structural_similarity as ssim
 from skimage.transform import resize
 
