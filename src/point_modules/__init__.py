@@ -2,7 +2,7 @@ from .points import points_map
 from .extention import extention
 from .tld import top_level_domain
 from .resolution import resolution
-from .sus_web import suspicious_website
+from .sus_portal import suspicious_portal
 
 
 def max_points():

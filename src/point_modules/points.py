@@ -4,12 +4,13 @@ points_map = {
     "top_level_domain": {
         "name": "Top Level Domain",
         "points": 3,
-        "description": "Top level domain of the website is probably from different country than expected"
+        "description": "Top level domain of the website is probably"
+                       "from a different country than expected"
     },
-    "suspicious_website": {
-        "name": "Suspicious website",
+    "suspicious_portal": {
+        "name": "Suspicious portal",
         "points": 2,
-        "description": "Website is known for having many fraudalent advertisements"
+        "description": "Portal is known for having many fraudalent advertisements"
     },
     "resolution": {
         "name": "Resolution",

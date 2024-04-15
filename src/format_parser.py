@@ -108,30 +108,6 @@ class FormatParser():
                 "database": []
             }
         }
-        # "similiar_images": {
-        #     "reality.cz": {
-        #         "tld": "cz",
-        #         "count": 1,
-        #         "images": [
-        #             {
-        #                 "display_photo_url": "https://reality.cz/obrazek.jpg",
-        #                 "ssim": 0.8,
-        #                 "file_path": "path/to/image.jpg",
-        #                 "website_url": "https://reality.cz",
-        #                 "website_name": "reality.cz",
-        #                 "display_position": 0,
-        #                 "points": 0,
-        #                 "point_modules_detected": {
-        #                     "phash": 0.5,
-        #                     "dhash": 0.5,
-        #                     "ahash": 0.5,
-        #                     "histogram": 0.5,
-        #                     "ssim": 0.5
-        #                 }
-        #             }
-        #         ]
-        #     }
-        # }
     
     def get_report(self):
         return self.report

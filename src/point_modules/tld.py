@@ -40,13 +40,13 @@ def top_level_domain(report=None):
 
     for img_type in FOUND_IMAGE_TYPES:
         for portal, data in report["images"][img_type].items():
-            if data["tld"] not in tld_baseline.keys():
+            if data["tld"] not in tld_baseline.keys() and data["tld"] in tld_countries:
                 for img in data["images"]:
                     img["point_modules_detected"]["top_level_domain"] = points_map.get("top_level_domain")
                     img["points"] += points_map["top_level_domain"]["points"]
     
     for img in report["images"]["posted_images"]:
-        if img["tld"] not in tld_baseline.keys():
+        if img["tld"] not in tld_baseline.keys() and data["tld"] in tld_countries:
             img["point_modules_detected"]["top_level_domain"] = points_map.get("top_level_domain")
             img["points"] += points_map["top_level_domain"]["points"]
 

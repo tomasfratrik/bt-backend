@@ -1,5 +1,5 @@
 
-sus_websites = [
+sus_portals = [
     "booking",
     "airbnb"
 ]

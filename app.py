@@ -1,4 +1,9 @@
 import os
+import json
+import time
+
+import concurrent.futures
+import requests
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -10,10 +15,11 @@ from src.pre_evaluation import PreEvaluation
 from src.evaluator import Evaluator
 from src.post_evaluation import PostEvaluation
 from src.run_grisa import run_grisa
-from src.image import PostedImage, FoundImage
+from src.image import PostedImage, FoundImage, SupportingImage
 import src.utils as utils
 import src.database as db
 
+from src.timer import timeme
 
 app = Flask(__name__)
 CORS(app)
@@ -44,6 +50,7 @@ def get_images_from_url():
 
 
 @app.route('/grisa/upload', methods=['POST', 'GET'])
+@timeme
 def grisa():
     """
     Main server endpoint to run grisa
@@ -54,25 +61,24 @@ def grisa():
     if request.method == 'POST':
         LOCAL_DEV = False
 
+        # start = time.time()
         if request.files.get('file'):
             file = request.files['file']
             if file.filename == '':
                 return jsonify({'error': 'File has empty name'})
             img = PostedImage(file, filename=file.filename, url=False)
-        elif request.json.get('url'):
-            url = request.json['url']
+        elif request.json.get('selected_url'):
+            url = request.json['selected_url']
             img = PostedImage(url, url=True)
             if img.get_status_code() != 200:
                 return jsonify({'error': 'Image is not accesible by the host server'})
+
+            # supporting_imgs_urls = request.json['urls']
+            # supporting_imgs = [SupportingImage(url, url=True) for url in supporting_imgs_urls]
         else:
             return jsonify({'error': 'No file found'})
-
         output = run_grisa(img.get_absolute_path(), LOCAL_DEV)
-
         posted_img_list = [img]
-
-        # db.insert_fraud_ad(conn, cur, img.get_website_name(), img.get_origin_img_url_link(), img.get_origin_img_url_link, img.get_image_data())
-        # db_img_list = db.get_fraud_ads_by_similarity(img.get_image_data())
 
         db_img_list = []
 
@@ -81,13 +87,42 @@ def grisa():
         elif 'error' in output:
             return jsonify(output)
 
+        start = time.time()
         sim_img_list = [FoundImage(img) for img in output[0]]
         src_img_list = [FoundImage(img) for img in output[1]]
 
+        def save_file_from_url(img):
+            url = img.get_img_display_url()
+            absolute_path = img.get_absolute_path()
+            start = time.time()
+            res = requests.get(url)
+            end = time.time()
+            print(f"Request for {url} took: {end - start}")
+            img.set_status_code(res.status_code)
+            if res.status_code == 200:
+                with open(absolute_path, 'wb') as f:
+                    f.write(res.content)
+
+        # Save images using ThreadPoolExecutor
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            executor.map(save_file_from_url, sim_img_list + src_img_list)
+
+        for img in sim_img_list + src_img_list:
+            img.find_img_extention()        
+
+        end = time.time()
+
+        # print(f"Creating image objects of similar and source took: {end - start} seconds")
+        # exit(0)
+
+
+        start = time.time()
         formated_output = FormatParser(posted_img_list=posted_img_list, 
-                                        sim_img_list=sim_img_list, 
-                                        src_img_list=src_img_list,
-                                        db_img_list=db_img_list)        
+                                       sim_img_list=sim_img_list, 
+                                       src_img_list=src_img_list,
+                                       db_img_list=db_img_list)        
+        end = time.time()
+        print(f"Formating output took: {end - start} seconds")
         
         pre_evaluation = PreEvaluation(formated_output.get_report())
 

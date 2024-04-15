@@ -3,6 +3,10 @@ import uuid
 import requests
 from urllib.parse import urlsplit
 import imghdr
+from concurrent.futures import ThreadPoolExecutor
+
+from src.timer import timeme
+import time
 
 IMG_DIR = "images"
 IMAGE_TYPES = ["posted_images", "similar_images", "source_images"]
@@ -105,18 +109,37 @@ class Image:
     
     def get_image_data(self):
         return self._image_data
+    
+    def save_file_from_url(self, url, absolute_path):
+        start = time.time()
+        res = requests.get(url)
+        end = time.time()
+        print(f"Request took: {end - start}")
+        self.set_status_code(res.status_code)
+        if res.status_code == 200:
+            with open(absolute_path, 'wb') as f:
+                f.write(res.content)
 
     def save_file(self):
         if self.from_url():
             url = self.get_origin_img_url_link()
-            res = requests.get(url)
-            self.set_status_code(res.status_code)
-            if self.get_status_code() == 200:
-                with open(self.get_absolute_path(), 'wb') as f:
-                    f.write(res.content)
-                    self._image_data = res.content
+            absolute_path = self.get_absolute_path()
+            with ThreadPoolExecutor() as executor:
+                executor.submit(self.save_file_from_url, url, absolute_path)
         else:
             self.get_img_file().save(self.get_absolute_path())
+
+    # def save_file(self):
+    #     if self.from_url():
+    #         url = self.get_origin_img_url_link()
+    #         res = requests.get(url)
+            # self.set_status_code(res.status_code)
+    #         if self.get_status_code() == 200:
+    #             with open(self.get_absolute_path(), 'wb') as f:
+    #                 f.write(res.content)
+    #                 self._image_data = res.content
+    #     else:
+    #         self.get_img_file().save(self.get_absolute_path())
 
     def remove(self):
         os.remove(self.get_absolute_path())
@@ -141,6 +164,8 @@ class PostedImage(Image):
         self.set_absolute_path()
         self.save_file()
 
+class SupportingImage(PostedImage):
+    pass
 
 class FoundImage(Image):
     def __init__(self, img_obj={}):
@@ -158,8 +183,8 @@ class FoundImage(Image):
         self._generate_random_name()
         self.set_relative_path()
         self.set_absolute_path()
-        self.save_file()
-        self.find_img_extention()
+        # self.save_file()
+        # self.find_img_extention()
     
     def get_img_position(self):
         return self._position
@@ -212,9 +237,3 @@ class DatabaseImage(Image):
         return self._display_url
     def get_image_data(self):
         return self._image_data
-    
-
-        # self._generate_random_name()
-        # self.set_relative_path()
-        # self.set_absolute_path()
-        # self.save_file()

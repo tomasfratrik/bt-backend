@@ -1,5 +1,7 @@
 from grisa import Grisa
+from src.timer import timeme
 
+@timeme
 def run_grisa(absolute_path, LOCAL_DEV=False):
     grisa = Grisa()
     grisa.options_add_argument('--headless')

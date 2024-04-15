@@ -1,5 +1,6 @@
 import src.point_modules as pm
 
+
 class Evaluator:
     # expected data in report format from FormatParser
     def __init__(self, report):
