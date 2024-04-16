@@ -1,4 +1,5 @@
-images/
+/images
 venv/
-requirements.txt/
-grisa_test_image/
+/venv
+/grisa_test_image
+/grisa
