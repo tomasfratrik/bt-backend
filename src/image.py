@@ -110,36 +110,36 @@ class Image:
     def get_image_data(self):
         return self._image_data
     
-    def save_file_from_url(self, url, absolute_path):
-        start = time.time()
-        res = requests.get(url)
-        end = time.time()
-        print(f"Request took: {end - start}")
-        self.set_status_code(res.status_code)
-        if res.status_code == 200:
-            with open(absolute_path, 'wb') as f:
-                f.write(res.content)
-
-    def save_file(self):
-        if self.from_url():
-            url = self.get_origin_img_url_link()
-            absolute_path = self.get_absolute_path()
-            with ThreadPoolExecutor() as executor:
-                executor.submit(self.save_file_from_url, url, absolute_path)
-        else:
-            self.get_img_file().save(self.get_absolute_path())
+    # def save_file_from_url(self, url, absolute_path):
+    #     start = time.time()
+    #     res = requests.get(url)
+    #     end = time.time()
+    #     print(f"Request took: {end - start}")
+    #     self.set_status_code(res.status_code)
+    #     if res.status_code == 200:
+    #         with open(absolute_path, 'wb') as f:
+    #             f.write(res.content)
 
     # def save_file(self):
     #     if self.from_url():
     #         url = self.get_origin_img_url_link()
-    #         res = requests.get(url)
-            # self.set_status_code(res.status_code)
-    #         if self.get_status_code() == 200:
-    #             with open(self.get_absolute_path(), 'wb') as f:
-    #                 f.write(res.content)
-    #                 self._image_data = res.content
+    #         absolute_path = self.get_absolute_path()
+    #         with ThreadPoolExecutor() as executor:
+    #             executor.submit(self.save_file_from_url, url, absolute_path)
     #     else:
     #         self.get_img_file().save(self.get_absolute_path())
+
+    def save_file(self):
+        if self.from_url():
+            url = self.get_origin_img_url_link()
+            res = requests.get(url)
+            self.set_status_code(res.status_code)
+            if self.get_status_code() == 200:
+                with open(self.get_absolute_path(), 'wb') as f:
+                    f.write(res.content)
+                    self._image_data = res.content
+        else:
+            self.get_img_file().save(self.get_absolute_path())
 
     def remove(self):
         os.remove(self.get_absolute_path())
