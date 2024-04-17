@@ -26,18 +26,15 @@ class PostEvaluation():
 
     def order_portals_by_points(self):
         for img_type in FOUND_IMAGE_TYPES:
-            # sorted_dict = dict(sorted(self.report["images"][img_type].items(),
-            #                           key=lambda x: x[1]["most_points"], reverse=True))
-            # self.report["images"][img_type] = sorted_dict
             sorted_keys = sorted(self.report["images"][img_type],
                                  key=lambda x: self.report["images"][img_type][x]["most_points"],
                                  reverse=True)
-            # print(f"SORTED KEYS: {sorted_keys}")
             sorted_dict = {key: self.report["images"][img_type][key] for key in sorted_keys}
-            # print("SORTED DICT")
-            # for k,v in sorted_dict.items():
-            #     print(f"{k} : {v['most_points']}")
             self.report["images"][img_type] = sorted_dict
+        
+        for img_type in FOUND_IMAGE_TYPES:
+            for i, (portal, data) in enumerate(self.report["images"][img_type].items(), 1):
+                data["rank"] = i
     
     def order_images_by_points(self):
         for img_type in FOUND_IMAGE_TYPES:

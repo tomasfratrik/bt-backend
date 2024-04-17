@@ -3,10 +3,7 @@ import uuid
 import requests
 from urllib.parse import urlsplit
 import imghdr
-from concurrent.futures import ThreadPoolExecutor
 
-from src.timer import timeme
-import time
 
 IMG_DIR = "images"
 IMAGE_TYPES = ["posted_images", "similar_images", "source_images"]
@@ -109,25 +106,6 @@ class Image:
     
     def get_image_data(self):
         return self._image_data
-    
-    # def save_file_from_url(self, url, absolute_path):
-    #     start = time.time()
-    #     res = requests.get(url)
-    #     end = time.time()
-    #     print(f"Request took: {end - start}")
-    #     self.set_status_code(res.status_code)
-    #     if res.status_code == 200:
-    #         with open(absolute_path, 'wb') as f:
-    #             f.write(res.content)
-
-    # def save_file(self):
-    #     if self.from_url():
-    #         url = self.get_origin_img_url_link()
-    #         absolute_path = self.get_absolute_path()
-    #         with ThreadPoolExecutor() as executor:
-    #             executor.submit(self.save_file_from_url, url, absolute_path)
-    #     else:
-    #         self.get_img_file().save(self.get_absolute_path())
 
     def save_file(self):
         if self.from_url():
@@ -144,6 +122,16 @@ class Image:
     def remove(self):
         os.remove(self.get_absolute_path())
 
+    @staticmethod
+    def save_file_from_url(img):
+        url = img.get_img_display_url()
+        absolute_path = img.get_absolute_path()
+        res = requests.get(url)
+        img.set_status_code(res.status_code)
+        if res.status_code == 200:
+            with open(absolute_path, 'wb') as f:
+                f.write(res.content)
+        img.find_img_extention()        
     
 
 
