@@ -14,7 +14,7 @@ class Scraper():
         domain_split = netloc.split('.')
         # domain = domain_split[0]
         domain = '.'.join(domain_split[-2:])
-        corresponding_class = suppw.websites_map.get(domain)
+        corresponding_class = suppw.portals_map.get(domain)
         if corresponding_class:
             return corresponding_class.scrape(url)
         else:
