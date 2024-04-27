@@ -90,7 +90,6 @@ class FormatParser():
                 "posted_images": [],
                 "similar_images": {},
                 "source_images": {},
-                # "database": []
             }
         }
     

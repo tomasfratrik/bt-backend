@@ -1,5 +1,5 @@
 
 sus_portals = [
-    "booking",
-    "airbnb"
+    "booking.com",
+    "airbnb.com"
 ]

@@ -8,9 +8,10 @@ def suspicious_portal(report=None):
     
     for img_type in FOUND_IMAGE_TYPES:
         for portal, data in report["images"][img_type].items():
-            if data["website_name"] in sus_portals:
+            # if data["website_name"] in sus_portals:
+            if f"{data['website_name']}.{data["tld"]}" in sus_portals:
                 for img in data["images"]:
-                    img["point_modules_detected"]["suspicious_portal"] = points_map.get("suspicious_website")
+                    img["point_modules_detected"]["suspicious_portal"] = points_map.get("suspicious_portal")
                     img["points"] += points_map["suspicious_portal"]["points"]
 
     for img in report["images"]["posted_images"]:

@@ -56,7 +56,8 @@ class PreEvaluation():
                         img_highest_ssim = ssim
                     if ssim > highest_ssim_overall :
                         highest_ssim_overall = ssim
-                img["ssim"] = img_highest_ssim
+                # img["ssim"] = img_highest_ssim
+                img["ssim"] = int(round(img_highest_ssim * 100, 0)) / 100 
 
         # self.report["ssim_threshold"] = int(round(highest_ssim_overall * 100, 0)) 
         ssim_rounded = int(round(highest_ssim_overall * 100, 0)) / 100

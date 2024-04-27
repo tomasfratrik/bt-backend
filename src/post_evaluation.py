@@ -1,5 +1,5 @@
 from src.image import IMAGE_TYPES, FOUND_IMAGE_TYPES
-from src.timer import timeme
+
 
 class PostEvaluation():
     """
@@ -16,7 +16,6 @@ class PostEvaluation():
     def adjust_report(self):
         self.order_images()
     
-    @timeme
     def order_images(self):
         self.score_to_percent()
         self.order_images_by_points()
