@@ -78,7 +78,6 @@ class FormatParser():
                 "website_url": img.get_img_origin_website_url(),
                 "website_name": img.get_website_name(),
             })
-       
 
     def init_report(self):
         self.report = {
@@ -92,6 +91,10 @@ class FormatParser():
                 "source_images": {},
             }
         }
+        posted_img = self._posted_img_list[0]
+        self.report["upload_type"] = "url" if posted_img.from_url() else "image"
+
+
     
     def get_report(self):
         return self.report

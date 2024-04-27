@@ -20,7 +20,6 @@ class PreEvaluation():
     
     @staticmethod
     def calculate_ssim(img1_path, img2_path):
-        print(f"Calculating SSIM between {img1_path} and {img2_path}")
         img1 = cv2.imread(img1_path, 0)
         img2 = cv2.imread(img2_path, 0)
 

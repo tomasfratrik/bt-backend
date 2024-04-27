@@ -11,7 +11,10 @@ def set_baseline(images):
                 tld_dict[tld] += 1
             else:
                 tld_dict[tld] = 1
+
     for img in images["posted_images"]:
+        if img["from_url"] is False:
+            break
         tld = img["tld"]
         if tld in tld_dict:
             tld_dict[tld] += 1
@@ -45,9 +48,10 @@ def top_level_domain(report=None):
                     img["point_modules_detected"]["top_level_domain"] = points_map.get("top_level_domain")
                     img["points"] += points_map["top_level_domain"]["points"]
     
-    for img in report["images"]["posted_images"]:
-        if img["tld"] not in tld_baseline.keys() and data["tld"] in tld_countries:
-            img["point_modules_detected"]["top_level_domain"] = points_map.get("top_level_domain")
-            img["points"] += points_map["top_level_domain"]["points"]
+    if report["upload_type"] == "url":
+        for img in report["images"]["posted_images"]:
+            if img["tld"] not in tld_baseline.keys() and data["tld"] in tld_countries:
+                img["point_modules_detected"]["top_level_domain"] = points_map.get("top_level_domain")
+                img["points"] += points_map["top_level_domain"]["points"]
 
     return report
