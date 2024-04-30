@@ -5,7 +5,7 @@ points_map = {
         "name": "Top Level Domain",
         "points": 3,
         "needs_url": True,
-        "description": "Top level domain of the website is probably"
+        "description": "Top level domain of the website is probably "
                        "from a different country than expected"
     },
     "suspicious_portal": {
