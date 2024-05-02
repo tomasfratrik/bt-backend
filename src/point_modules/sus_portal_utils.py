@@ -17,7 +17,7 @@ sus_portals = [
         "tld": ["com"]
     },
     {
-        "craigslist": "craigslist",
+        "portal": "craigslist",
         "tld": ["org"]
     }
 ]

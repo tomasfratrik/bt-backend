@@ -13,7 +13,6 @@ class FormatParser():
         self.init_report()
         self.parse_posted_images()
         self.parse_found_images()
-        # self.parse_db_images()
     
     def parse_posted_images(self):
         for img in self._posted_img_list:

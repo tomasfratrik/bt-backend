@@ -1,4 +1,5 @@
 import os
+import json
 import concurrent.futures
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -85,7 +86,28 @@ def grisa():
 
         utils.remove_images(posted_img_list + sim_img_list + src_img_list) 
 
-        return jsonify(post_evaluation.get_report())
+        report = post_evaluation.get_report()
+
+        return report
+
+
+@app.route('/grisa/set/country', methods=['POST'])
+def report_change_country():
+    """
+    Endpoint to change the baseline countries of the report
+    and make evaluation
+    """
+
+    country = request.json['country']
+    report = request.json['report']
+
+    evaluator = Evaluator(report)
+    evaluator.evaluate_new_countries(country)
+
+    post_evaluation = PostEvaluation(evaluator.get_report())
+    report = post_evaluation.get_report()
+
+    return jsonify(report)
 
 
 if __name__ == '__main__':
