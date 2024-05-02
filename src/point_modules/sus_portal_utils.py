@@ -11,5 +11,13 @@ sus_portals = [
     {
         "portal": "airbnb",
         "tld": ["com", "be", "ie", "pl", "de", "fi", "ca", "it", "fr", "es", "co.uk", "ie", "nl"]
+    },
+    {
+        "portal": "zillow",
+        "tld": ["com"]
+    },
+    {
+        "craigslist": "craigslist",
+        "tld": ["org"]
     }
 ]
