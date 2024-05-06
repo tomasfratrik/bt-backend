@@ -1,5 +1,6 @@
 from src.image import Image
 import src.point_modules as pm
+import uuid
 
 
 class FormatParser():
@@ -80,6 +81,7 @@ class FormatParser():
 
     def init_report(self):
         self.report = {
+            "id": str(uuid.uuid4()),
             "status": "ok",
             "error_msg": "",
             "max_points": pm.max_points(),

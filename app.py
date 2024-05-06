@@ -107,7 +107,7 @@ def report_change_country():
     post_evaluation = PostEvaluation(evaluator.get_report())
     report = post_evaluation.get_report()
 
-    return jsonify(report)
+    return report
 
 
 if __name__ == '__main__':
