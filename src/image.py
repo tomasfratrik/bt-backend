@@ -8,6 +8,7 @@ import imghdr
 IMG_DIR = "images"
 IMAGE_TYPES = ["posted_images", "similar_images", "source_images"]
 FOUND_IMAGE_TYPES = ["similar_images", "source_images"] 
+SOURCE_IMAGE_TYPES = ["source_images"]
 
 class Image:
     

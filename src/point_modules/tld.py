@@ -1,10 +1,12 @@
 from .tld_utils import tld_countries
 from .points import points_map
-from src.image import IMAGE_TYPES, FOUND_IMAGE_TYPES
+from src.image import IMAGE_TYPES, FOUND_IMAGE_TYPES, SOURCE_IMAGE_TYPES
 
 def set_baseline(images):
     tld_dict = {}
-    for img_type in FOUND_IMAGE_TYPES:
+
+    IMG_TYPES = SOURCE_IMAGE_TYPES if images["source_images"] else FOUND_IMAGE_TYPES
+    for img_type in IMG_TYPES:
         for portal, data in images[img_type].items():
             tld = data["tld"]
             if tld in tld_dict:
