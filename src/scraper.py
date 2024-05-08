@@ -1,3 +1,10 @@
+
+"""
+Scraper class to scrape images from advertisement websites
+
+Author: Tomas Fratrik
+"""
+
 from urllib.parse import urlsplit 
 import src.supported_websites as suppw
 

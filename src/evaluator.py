@@ -1,3 +1,9 @@
+"""
+Evaluator class is responsible for evaluating the report data.
+
+Author: Tomas Fratri
+"""
+
 import src.point_modules as pm
 
 

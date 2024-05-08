@@ -1,3 +1,10 @@
+
+"""
+Run the GRISA on its endpoint
+
+Author: Tomas Fratrik
+"""
+
 import requests
 
 

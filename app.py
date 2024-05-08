@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+"""
+The main server endpoints
+
+Author: Tomas Fratrik
+"""
+
 import os
 import json
 import concurrent.futures
@@ -50,6 +57,7 @@ def grisa():
     if request.method == 'POST':
         LOCAL_DEV = False
 
+        # parse the request
         if request.files.get('file'):
             file = request.files['file']
             if file.filename == '':
@@ -73,17 +81,22 @@ def grisa():
         with concurrent.futures.ThreadPoolExecutor() as executor:
             executor.map(Image.save_file_from_url, sim_img_list + src_img_list)
 
+        # Format the outputs
         formated_output = FormatParser(posted_img_list=posted_img_list, 
                                        sim_img_list=sim_img_list, 
                                        src_img_list=src_img_list)        
         
+        # Pre-evaluate the report
         pre_evaluation = PreEvaluation(formated_output.get_report())
 
+        # Evaluate the report
         evaluator = Evaluator(pre_evaluation.get_report())
         evaluator.evaluate()
 
+        # Post-evaluate the report
         post_evaluation = PostEvaluation(evaluator.get_report())
 
+        # Remove stored iamges
         utils.remove_images(posted_img_list + sim_img_list + src_img_list) 
 
         report = post_evaluation.get_report()

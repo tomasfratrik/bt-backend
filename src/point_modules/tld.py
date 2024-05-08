@@ -1,3 +1,9 @@
+"""
+This module is responsible for the top level domain evaluation.
+
+Author: Tomas Fratrik
+"""
+
 from .tld_utils import tld_countries
 from .points import points_map
 from src.image import IMAGE_TYPES, FOUND_IMAGE_TYPES, SOURCE_IMAGE_TYPES
@@ -33,6 +39,7 @@ def set_baseline(images):
         if count == max(tld_dict.values()):
             tld_baseline[tld] = tld_countries.get(tld)
     
+    print(f"tld_baseline: {tld_baseline}")
     return tld_baseline
 
 

@@ -1,3 +1,9 @@
+"""
+This module contains the TLD (Top Level Domain) related utilities.
+
+Author: Tomas Fratrik
+"""
+
 tld_countries = {
     "ac": "Ascension Island",
     "ad": "Andorra",

@@ -1,3 +1,9 @@
+"""
+This module contains the Image class and its subclasses.
+
+Author: Tomas Fratrik
+"""
+
 import os
 import uuid
 import requests
@@ -172,8 +178,6 @@ class FoundImage(Image):
         self._generate_random_name()
         self.set_relative_path()
         self.set_absolute_path()
-        # self.save_file()
-        # self.find_img_extention()
     
     def get_img_position(self):
         return self._position
@@ -203,6 +207,7 @@ class FoundImage(Image):
     def set_found_img_extention(self, extention):
         self._found_img_extention = extention
     
+    # this is just for saving the image
     def get_original_img_extention(self):
         return 'jpg'
 

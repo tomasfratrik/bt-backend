@@ -1,4 +1,9 @@
-# Names have to correlate with module names
+"""
+This module contains the points that can be awarded to a website.
+ * Names have to correlate with module names
+
+Author: Tomas Fratrik
+"""
 
 points_map = {
     "top_level_domain": {

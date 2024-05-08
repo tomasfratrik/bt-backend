@@ -1,3 +1,9 @@
+""" 
+This module is responsible for detecting resolution points in the images.
+    
+Author: Tomas Fratrik
+"""
+
 from .points import points_map
 
 def set_baseline(images):

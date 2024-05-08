@@ -1,3 +1,9 @@
+"""
+Final touches to report
+
+Author: Tomas Fratrik
+"""
+
 from src.image import IMAGE_TYPES, FOUND_IMAGE_TYPES
 
 

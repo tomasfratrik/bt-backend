@@ -1,3 +1,9 @@
+"""
+Create baseline for the extention of the images and add points
+
+Author: Tomas Fratrik
+"""
+
 from .points import points_map
 from src.image import IMAGE_TYPES, FOUND_IMAGE_TYPES
 from .extention_utils import ext_list

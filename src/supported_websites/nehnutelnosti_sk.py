@@ -1,3 +1,9 @@
+"""
+This file contains the class to scrape images from the website nehnutelnosti.sk
+
+Author: Tomas Fratrik
+"""
+
 import requests
 from bs4 import BeautifulSoup
 import json

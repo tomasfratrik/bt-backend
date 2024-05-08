@@ -1,3 +1,8 @@
+"""
+This file contains the list of all the supported file extensions.
+
+Author: Tomas Fratrik
+"""
 
 ext_list = [
     ["jpg", "jpeg"],

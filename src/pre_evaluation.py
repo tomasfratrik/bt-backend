@@ -1,3 +1,9 @@
+"""
+Here we can do any changes to report before evaluation
+
+Author: Tomas Fratrik
+"""
+
 import cv2
 from skimage.metrics import structural_similarity as ssim
 from skimage.transform import resize

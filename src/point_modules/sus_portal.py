@@ -1,3 +1,9 @@
+"""
+This module is used to detect if the image is from a suspicious portal.
+
+Author: Tomas Fratrik
+"""
+
 from .sus_portal_utils import sus_portals, SPECIAL_TLDS
 from .points import points_map
 from src.image import FOUND_IMAGE_TYPES

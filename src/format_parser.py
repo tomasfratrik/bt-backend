@@ -1,3 +1,9 @@
+"""
+This module is responsible for parsing the image data and creating a report
+
+Author: Tomas Fratrik
+"""
+
 from src.image import Image
 import src.point_modules as pm
 import uuid

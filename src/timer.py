@@ -1,6 +1,10 @@
+"""
+Decorator for testing purposes
+
+Author: Tomas Fratrik
+"""
+
 import time
-
-
 
 def timeme(method):
     def wrapper(*args, **kw):

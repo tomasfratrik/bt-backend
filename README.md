@@ -1,15 +1,18 @@
 # Backend for bachelor thesis
-Does evaluation on images
+Backend for web appliaction, which evaluates advertisemets, and finds fraudulent ones.
+Returns back **report**.
+
 
 ## Important
-
 **Change `GRISA` server in src/run_grisa.py, depending on your needs**
 
-### Requirements
-Install all requirements with `pip install -r requirements.txt`
-
 ### Local development
+create virtual enviroment with `python3 -m venv venv`
+Activate it with `. venv/bin/activate`
+Install all requirements with `pip install -r requirements.txt`
 run `python3 app.py`
+
+To deactivate type `deactivate`
 
 ### API Endpoints
 `/ping` [GET]
@@ -23,6 +26,10 @@ run `python3 app.py`
 `/grisa/upload` [POST]
 - should get URL to image or image file
 - main entry point for backend that does the evaluation 
+
+`/grisa/set/country` [POST]
+- Recive country/countries and report
+- do evaluation and send report back
 
 ### Hosting
 - Hosted on Heroku

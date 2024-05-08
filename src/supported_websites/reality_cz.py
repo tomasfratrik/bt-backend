@@ -1,3 +1,9 @@
+"""
+This file contains the class Reality_CZ which is used to scrape images from reality.cz
+
+Author: Tomas Fratrik
+"""
+
 import requests
 from bs4 import BeautifulSoup
 
